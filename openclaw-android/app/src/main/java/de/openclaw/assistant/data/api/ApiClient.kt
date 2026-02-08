@@ -34,8 +34,12 @@ object ApiClient {
         .readTimeout(60, TimeUnit.SECONDS)
         .build()
 
+    // Für lokales Testing mit Emulator: 10.0.2.2:3000
+    // Für Produktion: BuildConfig.API_BASE_URL
+    private val BASE_URL = "http://10.0.2.2:3000/"
+
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.API_BASE_URL + "/")
+        .baseUrl(BASE_URL)
         .client(client)
         .addConverterFactory(GsonConverterFactory.create())
         .build()

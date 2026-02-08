@@ -192,22 +192,12 @@ app.get('/api/v1/chat/history', authMiddleware, (req, res) => {
 
 const PORT = 3000;
 app.listen(PORT, '127.0.0.1', () => {
-  console.log('╔════════════════════════════════════════════════════════╗');
-  console.log('║  🚀 OpenClaw Backend - LOCAL TEST SERVER              ║');
-  console.log('╠════════════════════════════════════════════════════════╣');
-  console.log(`║  URL: http://127.0.0.1:${PORT}                        ║`);
-  console.log('║  Health: http://127.0.0.1:3000/health                 ║');
-  console.log('║  API: http://127.0.0.1:3000/api/v1/chat/message       ║');
-  console.log('╚════════════════════════════════════════════════════════╝');
+  console.log('OpenClaw Backend - LOCAL TEST SERVER');
+  console.log(`URL: http://127.0.0.1:${PORT}`);
+  console.log('Health: http://127.0.0.1:3000/health');
   console.log('');
-  console.log('🧪 TEST ACCOUNTS:');
+  console.log('TEST ACCOUNTS:');
   TEST_ACCOUNTS.forEach(acc => {
-    console.log(`  📧 ${acc.email} / ${acc.password}`);
+    console.log(`  ${acc.email} / ${acc.password}`);
   });
-  console.log('');
-  console.log('🚀 QUICK TEST:');
-  console.log('  curl http://127.0.0.1:3000/api/v1/auth/test-accounts');
-  console.log('  curl -X POST http://127.0.0.1:3000/api/v1/auth/login \\\');
-  console.log('    -H "Content-Type: application/json" \\\');
-  console.log('    -d \'{"email":"demo1@openclaw.test","password":"demo123"}\'');
 });

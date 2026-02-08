@@ -39,12 +39,7 @@ function seedTestAccounts(users, messages) {
   });
   
   console.log(`📝 ${TEST_ACCOUNTS.length} Test-Accounts bereit`);
-  console.log('');
-  console.log('🧪 SCHNELL-TEST:');
-  console.log('  curl http://127.0.0.1:3000/api/v1/auth/login \\\');
-  console.log('    -X POST \\\');
-  console.log('    -H "Content-Type: application/json" \\\');
-  console.log('    -d \'{"email":"demo1@openclaw.test","password":"demo123"}\'');
+  console.log('🧪 Test: curl http://127.0.0.1:3000/api/v1/auth/test-accounts');
 }
 
 module.exports = { TEST_ACCOUNTS, autoTestAccountMiddleware, seedTestAccounts };
