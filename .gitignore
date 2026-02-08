@@ -1,0 +1,29 @@
+# Build outputs
+build/
+*.apk
+*.aab
+
+# Keystore files (NEVER commit!)
+*.keystore
+*.jks
+keystore.base64
+release.keystore
+
+# Local properties
+local.properties
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp

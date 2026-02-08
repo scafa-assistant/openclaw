@@ -1,0 +1,115 @@
+name: Android CI/CD
+
+on:
+  push:
+    branches: [ main, master, develop ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+    inputs:
+      build_type:
+        description: 'Build Type'
+        required: true
+        default: 'debug'
+        type: choice
+        options:
+          - debug
+          - release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: gradle
+
+    - name: Grant execute permission for gradlew
+      run: chmod +x openclaw-android/gradlew
+
+    - name: Cache Gradle packages
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        restore-keys: |
+          ${{ runner.os }}-gradle-
+
+    # Debug Build
+    - name: Build Debug APK
+      if: github.event.inputs.build_type != 'release'
+      run: |
+        cd openclaw-android
+        ./gradlew assembleDebug --no-daemon
+
+    # Release Build (requires signing)
+    - name: Build Release APK
+      if: github.event.inputs.build_type == 'release'
+      env:
+        KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+        KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+        KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+      run: |
+        cd openclaw-android
+        echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > release.keystore
+        ./gradlew assembleRelease --no-daemon
+
+    # Upload Debug APK
+    - name: Upload Debug APK
+      if: github.event.inputs.build_type != 'release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: openclaw-debug-apk
+        path: openclaw-android/app/build/outputs/apk/debug/*.apk
+        retention-days: 30
+
+    # Upload Release APK
+    - name: Upload Release APK
+      if: github.event.inputs.build_type == 'release'
+      uses: actions/upload-artifact@v4
+      with:
+        name: openclaw-release-apk
+        path: openclaw-android/app/build/outputs/apk/release/*.apk
+        retention-days: 90
+
+    # Run Tests
+    - name: Run Unit Tests
+      run: |
+        cd openclaw-android
+        ./gradlew test --no-daemon
+
+    # Upload Test Results
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: openclaw-android/app/build/reports/tests/
+        retention-days: 7
+
+  # Backend Deployment (optional)
+  deploy-backend:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event.inputs.build_type == 'release'
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Deploy to Railway
+      uses: railway/cli@latest
+      with:
+        railway_token: ${{ secrets.RAILWAY_TOKEN }}
+      run: |
+        cd openclaw-backend
+        railway up
