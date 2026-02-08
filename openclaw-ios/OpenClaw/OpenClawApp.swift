@@ -4,6 +4,7 @@ import SwiftUI
 struct OpenClawApp: App {
     @AppStorage("has_completed_onboarding") private var hasCompletedOnboarding = false
     @AppStorage("is_authenticated") private var isAuthenticated = false
+    @State private var startVoiceImmediately = false
     
     var body: some Scene {
         WindowGroup {
@@ -15,11 +16,18 @@ struct OpenClawApp: App {
                         isAuthenticated = true
                     }
                 } else {
-                    MainContentView()
+                    MainContentView(startVoiceImmediately: $startVoiceImmediately)
                 }
             }
             .onOpenURL { url in
                 handleDeepLink(url)
+            }
+            .onContinueUserActivity("INSpeakableString") { userActivity in
+                // Wenn Siri die App öffnet
+                if let phrase = userActivity.suggestedInvocationPhrase {
+                    print("Opened via Siri with phrase: \(phrase)")
+                    startVoiceImmediately = true
+                }
             }
         }
     }
@@ -27,6 +35,7 @@ struct OpenClawApp: App {
     private func handleDeepLink(_ url: URL) {
         // openclaw://ask → start voice input immediately
         if url.host == "ask" {
+            startVoiceImmediately = true
             NotificationCenter.default.post(name: .startVoiceInput, object: nil)
         }
     }
@@ -38,9 +47,10 @@ extension Notification.Name {
 
 struct MainContentView: View {
     @StateObject private var chatViewModel = ChatViewModel()
+    @Binding var startVoiceImmediately: Bool
 
     var body: some View {
-        ChatView()
+        ChatView(startVoiceImmediately: $startVoiceImmediately)
             .environmentObject(chatViewModel)
     }
 }

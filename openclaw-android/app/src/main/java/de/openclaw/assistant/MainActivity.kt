@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
                     }
                     isAuthenticated || !showAuth -> {
                         ChatScreen(
-                            autoListen = autoListen || startVoice,
+                            autoListen = autoListen || startVoice || fromAssistant,
                             initialCommand = quickCommand
                         )
                     }
