@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent-a-Human | Human-in-the-Loop as a Service</title>
+    <meta name="description" content="Wenn AI an ihre Grenzen stößt — Menschen übernehmen. Human-in-the-Loop as a Service für kritische Entscheidungen.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #3b82f6;
+            --secondary: #0f172a;
+            --accent: #10b981;
+            --text: #1e293b;
+            --text-light: #64748b;
+            --bg: #ffffff;
+            --bg-light: #f8fafc;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--bg);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-light);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 8rem 2rem 4rem;
+            background: linear-gradient(135deg, var(--bg) 0%, var(--bg-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 50%;
+            height: 100%;
+            background: radial-gradient(circle at 80% 50%, rgba(37, 99, 235, 0.1) 0%, transparent 50%);
+        }
+
+        .hero-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 span {
+            color: var(--primary);
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+            max-width: 500px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-visual {
+            position: relative;
+        }
+
+        .hero-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .ai-bot {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .ai-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .ai-status {
+            flex: 1;
+        }
+
+        .ai-status strong {
+            display: block;
+            color: var(--secondary);
+        }
+
+        .ai-status span {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .uncertainty-meter {
+            background: var(--bg-light);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .meter-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .meter-bar {
+            height: 8px;
+            background: var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            height: 100%;
+            width: 85%;
+            background: linear-gradient(90deg, #f59e0b, #ef4444);
+            border-radius: 4px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .handoff-alert {
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border: 1px solid #f59e0b;
+            border-radius: 1rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .handoff-icon {
+            width: 40px;
+            height: 40px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .handoff-text strong {
+            display: block;
+            color: var(--secondary);
+        }
+
+        .handoff-text span {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        /* Section Styles */
+        section {
+            padding: 6rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: var(--bg-light);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .step {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .step-number {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1.5rem;
+        }
+
+        .step h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .step p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Use Cases */
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .use-case {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+
+        .use-case:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .use-case-icon {
+            width: 56px;
+            height: 56px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .use-case h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.75rem;
+        }
+
+        .use-case p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .use-case-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            background: var(--bg-light);
+            color: var(--text-light);
+            padding: 0.25rem 0.75rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        /* Pricing */
+        .pricing {
+            background: var(--bg-light);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            position: relative;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 0.25rem 1rem;
+            border-radius: 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .pricing-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-header p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .price {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .price-amount {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--secondary);
+        }
+
+        .price-period {
+            color: var(--text-light);
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features .check {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, #1e293b 100%);
+            color: white;
+            text-align: center;
+            padding: 6rem 2rem;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section p {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-btn {
+            background: white;
+            color: var(--secondary);
+            font-size: 1.125rem;
+            padding: 1rem 2.5rem;
+        }
+
+        .cta-btn:hover {
+            background: var(--bg-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Trust Section */
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .trust-item {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .trust-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(37, 99, 235, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.75rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .trust-item h3 {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .trust-item p {
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        footer p {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-container {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-subtitle {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-visual {
+                order: -1;
+            }
+
+            .steps,
+            .use-cases-grid,
+            .trust-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <span>🧠</span> Rent-a-Human
+            </a>
+            <div class="nav-links">
+                <a href="#how-it-works">Wie es funktioniert</a>
+                <a href="#use-cases">Use Cases</a>
+                <a href="#pricing">Preise</a>
+                <a href="#contact" class="btn btn-primary">Termin vereinbaren</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <span>⚡</span> Human-in-the-Loop as a Service
+                </div>
+                <h1>
+                    Wenn AI an ihre Grenzen stößt — <span>Menschen übernehmen</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Intelligente Handoff-Systeme für kritische Entscheidungen. Wenn die Unsicherheit zu hoch ist, greifen echte Experten ein — in Echtzeit, skalierbar, GDPR-konform.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn btn-primary btn-large">
+                        <span>📅</span> Beratungstermin vereinbaren
+                    </a>
+                    <a href="#how-it-works" class="btn btn-outline btn-large">
+                        Mehr erfahren
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-card">
+                    <div class="ai-bot">
+                        <div class="ai-icon">🤖</div>
+                        <div class="ai-status">
+                            <strong>AI-Agent</strong>
+                            <span>Analysiert Kundenanfrage...</span>
+                        </div>
+                    </div>
+                    <div class="uncertainty-meter">
+                        <div class="meter-label">
+                            <span>Konfidenz-Score</span>
+                            <span style="color: #ef4444; font-weight: 600;">42%</span>
+                        </div>
+                        <div class="meter-bar">
+                            <div class="meter-fill"></div>
+                        </div>
+                    </div>
+                    <div class="handoff-alert">
+                        <div class="handoff-icon">👤</div>
+                        <div class="handoff-text">
+                            <strong>Human Handoff ausgelöst</strong>
+                            <span>Expert verbindet in 12 Sekunden...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Wie es funktioniert</h2>
+                <p>Seamless Integration von AI-Automation und menschlicher Expertise — in drei einfachen Schritten</p>
+            </div>
+            <div class="steps">
+                <div class="step fade-in">
+                    <div class="step-number">1</div>
+                    <h3>AI analysiert</h3>
+                    <p>Ihre AI verarbeitet eingehende Anfragen automatisch. Bei hoher Konfidenz wird sofort gehandelt — ohne menschliches Zutun.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">2</div>
+                    <h3>Smart Handoff</h3>
+                    <p>Bei Unsicherheit, sensiblen Daten oder komplexen Fällen leiten wir nahtlos an qualifizierte Experten weiter.</p>
+                </div>
+                <div class="step fade-in">
+                    <div class="step-number">3</div>
+                    <h3>Human resolved</h3>
+                    <p>Menschliche Experten lösen den Fall. Die Lösung fließt zurück ins System — Ihre AI lernt dazu.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases -->
+    <section id="use-cases">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Use Cases</h2>
+                <p>Von Compliance bis Creative — überall dort, wo menschliches Urteilsvermögen entscheidend ist</p>
+            </div>
+            <div class="use-cases-grid">
+                <div class="use-case fade-in">
+                    <div class="use-case-icon">🔍</div>
+                    <h3>AI Output Review</h3>
+                    <p>Qualitätskontrolle für KI-generierte Inhalte, Code-Reviews und Faktenprüfung vor Veröffentlichung.</p>
+                    <div class="use-case-tags">
+                        <span class="tag">Content</span>
+                        <span class="tag">Code</span>
+                        <span class="tag">Fakten</span>
+                    </div>
+                </div>
+                <div class="use-case fade-in">
+                    <div class="use-case-icon">⚖️</div>
+                    <h3>Compliance & Legal</h3>
+                    <p>Rechtliche Prüfung, regulatorische Konformität und Risikobewertung bei sensiblen Entscheidungen.</p>
+                    <div class="use-case-tags">
+                        <span class="tag">DSGVO</span>
+                        <span class="tag">Recht</span>
+                        <span class="tag">Risiko</span>
+                    </div>
+                </div>
+                <div class="use-case fade-in">
+                    <div class="use-case-icon">🎨</div>
+                    <h3>Creative & Strategy</h3>
+                    <p>Kreative Entscheidungen, Brand-Alignment und strategische Beratung — menschliches Feingefühl trifft auf AI-Effizienz.</p>
+                    <div class="use-case-tags">
+                        <span class="tag">Marketing</span>
+                        <span class="tag">Design</span>
+                        <span class="tag">Strategie</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Transparente Preise</h2>
+                <p>Wählen Sie das Modell, das zu Ihrem Workflow passt — keine versteckten Kosten</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card fade-in">
+                    <div class="pricing-header">
+                        <h3>Pay-per-Review</h3>
+                        <p>Für sporadische Handoffs und kleine Teams</p>
+                    </div>
+                    <div class="price">
+                        <span class="price-amount">€4.50</span>
+                        <span class="price-period">/ Review</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> Durchschnittlich 5 Min. pro Review</li>
+                        <li><span class="check">✓</span> 24/7 Verfügbarkeit</li>
+                        <li><span class="check">✓</span> Domain-Experten</li>
+                        <li><span class="check">✓</span> Keine Mindestlaufzeit</li>
+                        <li><span class="check">✓</span> Monatliche Rechnung</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-outline">Kontakt aufnehmen</a>
+                </div>
+                <div class="pricing-card featured fade-in">
+                    <div class="featured-badge">BELIEBT</div>
+                    <div class="pricing-header">
+                        <h3>Business Abo</h3>
+                        <p>Für Teams mit regelmäßigem Bedarf</p>
+                    </div>
+                    <div class="price">
+                        <span class="price-amount">€890</span>
+                        <span class="price-period">/ Monat</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> 250 Reviews inklusive</li>
+                        <li><span class="check">✓</span> €3.20 / zusätzlicher Review</li>
+                        <li><span class="check">✓</span> Prioritäts-Handling</li>
+                        <li><span class="check">✓</span> Dedizierte Expert-Pool</li>
+                        <li><span class="check">✓</span> API-Integration</li>
+                        <li><span class="check">✓</span> SLA-Garantie</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary">Jetzt starten</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="cta-section">
+        <div class="container">
+            <h2>Bereit für Human-in-the-Loop?</h2>
+            <p>Lassen Sie uns besprechen, wie wir Ihre AI-Systeme mit menschlicher Expertise ergänzen können.</p>
+            <a href="mailto:hello@rent-a-human.io?subject=Beratungstermin%20anfragen" class="btn cta-btn">
+                <span>📅</span> Jetzt Beratungstermin vereinbaren
+            </a>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust">
+        <div class="container">
+            <div class="section-header fade-in">
+                <h2>Sie können sich darauf verlassen</h2>
+                <p>Höchste Standards bei Sicherheit, Compliance und Service-Qualität</p>
+            </div>
+            <div class="trust-grid">
+                <div class="trust-item fade-in">
+                    <div class="trust-icon">🔒</div>
+                    <h3>Enterprise Security</h3>
+                    <p>SOC 2 Type II zertifiziert, Ende-zu-Ende Verschlüsselung, strenges Access-Management</p>
+                </div>
+                <div class="trust-item fade-in">
+                    <div class="trust-icon">📋</div>
+                    <h3>DSGVO-konform</h3>
+                    <p>Vollständige GDPR-Compliance, Datenverarbeitung nur in der EU, rechtskonforme Verträge</p>
+                </div>
+                <div class="trust-item fade-in">
+                    <div class="trust-icon">⚡</div>
+                    <h3>Blitzschnelle Reaktion</h3>
+                    <p>Durchschnittliche Reaktionszeit unter 15 Sekunden, 99.9% Uptime, 24/7 Verfügbarkeit</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Rent-a-Human. Human-in-the-Loop as a Service. Alle Rechte vorbehalten.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll Animation Script -->
+    <script>
+        // Fade in animation on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

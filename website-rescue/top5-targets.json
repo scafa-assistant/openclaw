@@ -1,0 +1,57 @@
+[
+  {
+    "name": "Elektriker Berlin - Pinguin",
+    "url": "http://www.elektro-elektroinstallation.de/",
+    "branche": "Elektriker",
+    "kontakt_email": null,
+    "haesslichkeits_score": 7,
+    "telefon": "030 55278405",
+    "adresse": "Düsseldorfer Str. 60a, Berlin",
+    "bemerkung": "Website nicht erreichbar (Cloudflare 403). Veralteter Eintrag bei Google Maps. Hoher Redesign-Bedarf.",
+    "prio": "HIGH"
+  },
+  {
+    "name": "Malerbetrieb Konrad Huber GmbH",
+    "url": "http://www.maler-huber.de/",
+    "branche": "Maler",
+    "kontakt_email": "info@maler-huber.de",
+    "haesslichkeits_score": 6,
+    "telefon": "0871 22551",
+    "adresse": "Hagrainer Str. 10, Landshut",
+    "bemerkung": "Sehr minimalistische Seite (nur 271 bytes Content). 150 Jahre alter Betrieb, aber Website wirkt vernachlässigt.",
+    "prio": "HIGH"
+  },
+  {
+    "name": "Raßhofer Malerbetrieb GmbH",
+    "url": "http://www.rasshofer.org/",
+    "branche": "Maler",
+    "kontakt_email": "info@rasshofer.org",
+    "haesslichkeits_score": 5,
+    "telefon": "0871 75129",
+    "adresse": "Landshuter Str. 61, Landshut",
+    "bemerkung": "KEINE HTTPS-Weiterleitung! Website bleibt auf HTTP. Älteres Design, schlichte Struktur. Familienbetrieb seit 2004.",
+    "prio": "MEDIUM"
+  },
+  {
+    "name": "Malermeister Toni",
+    "url": "http://www.malermeistertoni.de/",
+    "branche": "Maler",
+    "kontakt_email": null,
+    "haesslichkeits_score": 5,
+    "telefon": "0173 9813494",
+    "adresse": "Kaitersbergstraße 37, Landshut",
+    "bemerkung": "Sehr einfache Seite (438 bytes), nur Text-Content. Keine moderne Gestaltung. Seit 2018 im Geschäft.",
+    "prio": "MEDIUM"
+  },
+  {
+    "name": "Lütge Haustechnik GmbH",
+    "url": "http://www.sanitaer-heizung-notdienst.de/",
+    "branche": "Klempner/Sanitär",
+    "kontakt_email": "info@sanitaer-heizung-notdienst.de",
+    "haesslichkeits_score": 5,
+    "telefon": "040 48509066",
+    "adresse": "Orchideenring 11b, Hamburg",
+    "bemerkung": "Einfaches Design, übersichtlich aber nicht modern. Google Maps zeigt noch HTTP trotz HTTPS-Weiterleitung.",
+    "prio": "MEDIUM"
+  }
+]

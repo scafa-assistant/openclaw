@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">OpenClaw</string>
+    <string name="default_assistant_label">OpenClaw Assistant</string>
+    <string name="voice_trigger_label">Frag OpenClaw</string>
+    <string name="settings">Einstellungen</string>
+    <string name="microphone_permission_required">Mikrofon-Berechtigung wird benötigt</string>
+</resources>

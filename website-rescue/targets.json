@@ -1,0 +1,162 @@
+[
+  {
+    "name": "Schreinerei Leim&Späne München",
+    "url": "http://www.leimundspaene.de/",
+    "branche": "Schreiner/Tischler",
+    "kontakt_email": "info@leimundspaene.de",
+    "haesslichkeits_score": 4,
+    "bemerkung": "Leitet auf HTTPS um, aber moderne WordPress-Seite. Google Maps zeigt noch HTTP."
+  },
+  {
+    "name": "Birnbaumblau Schreinerei GmbH",
+    "url": "http://www.birnbaumblau.de/",
+    "branche": "Schreiner/Möbeltischler",
+    "kontakt_email": "info@birnbaumblau.de",
+    "haesslichkeits_score": 3,
+    "bemerkung": "Leitet auf HTTPS um, minimalistisches Design. Google Maps zeigt noch HTTP."
+  },
+  {
+    "name": "Schreinerei Merkl GmbH",
+    "url": "http://www.schreinerei-merkl.de/",
+    "branche": "Schreiner/Möbeltischler",
+    "kontakt_email": "info@schreinerei-merkl.de",
+    "haesslichkeits_score": 3,
+    "bemerkung": "Leitet auf HTTPS um, moderne WordPress-Seite. Google Maps zeigt noch HTTP."
+  },
+  {
+    "name": "Elektriker Berlin - Pinguin",
+    "url": "http://www.elektro-elektroinstallation.de/",
+    "branche": "Elektriker",
+    "kontakt_email": null,
+    "haesslichkeits_score": 7,
+    "bemerkung": "Website nicht erreichbar (403 Cloudflare). Veralteter Eintrag bei Google Maps."
+  },
+  {
+    "name": "Reta Elektrotechnik GmbH",
+    "url": "http://www.reta-elektrotechnik.de/",
+    "branche": "Elektroinstallationsdienst",
+    "kontakt_email": "info@reta-gmbh.de",
+    "haesslichkeits_score": 4,
+    "bemerkung": "Leitet auf HTTPS um, moderne Seite. Google Maps zeigt noch HTTP."
+  },
+  {
+    "name": "Lütge Haustechnik GmbH",
+    "url": "http://www.sanitaer-heizung-notdienst.de/",
+    "branche": "Sanitärinstallateur/Klempner",
+    "kontakt_email": "info@sanitaer-heizung-notdienst.de",
+    "haesslichkeits_score": 5,
+    "bemerkung": "Leitet auf HTTPS um, einfaches Design. Google Maps zeigt noch HTTP."
+  },
+  {
+    "name": "ElbHandWerk Sanitär und Heizung GmbH",
+    "url": "http://www.elbhandwerk.com/",
+    "branche": "Sanitärtechnik/Klempner",
+    "kontakt_email": "info@elbhandwerk.com",
+    "haesslichkeits_score": 3,
+    "bemerkung": "Leitet auf HTTPS um, sehr moderne Seite. Google Maps zeigt noch HTTP."
+  },
+  {
+    "name": "Kutay Sanitär Klempner Heizung",
+    "url": "http://www.klempner-hh.de/",
+    "branche": "Sanitärinstallateur/Klempner",
+    "kontakt_email": null,
+    "haesslichkeits_score": 4,
+    "bemerkung": "Leitet auf HTTPS um, moderne minimalistische Seite."
+  },
+  {
+    "name": "mein-schreiner.de",
+    "url": "http://www.mein-schreiner.de/",
+    "branche": "Schreiner/Möbeltischler",
+    "kontakt_email": "info@mein-schreiner.de",
+    "haesslichkeits_score": 4,
+    "bemerkung": "Leitet auf HTTPS um, WordPress-Seite mit Konfigurator."
+  },
+  {
+    "name": "Schreinerei Heiss",
+    "url": "http://www.schreinereiheiss.de/",
+    "branche": "Schreiner/Zimmermann",
+    "kontakt_email": "info@schreinereiheiss.de",
+    "haesslichkeits_score": 3,
+    "bemerkung": "Leitet auf HTTPS um, sehr moderne Seite."
+  },
+  {
+    "name": "Schreinermeisterei",
+    "url": "http://www.schreinermeisterei.info/",
+    "branche": "Schreiner/Möbeltischler",
+    "kontakt_email": "mail@schreinermeisterei.info",
+    "haesslichkeits_score": 2,
+    "bemerkung": "Leitet auf HTTPS um, sehr hochwertige moderne Seite."
+  },
+  {
+    "name": "HDS München - Dachdeckerei",
+    "url": "http://www.hds-muenchen.de/",
+    "branche": "Dachdecker/Spengler",
+    "kontakt_email": "info@hds-muenchen.de",
+    "haesslichkeits_score": 4,
+    "bemerkung": "Leitet auf HTTPS um, professionelle moderne Seite."
+  },
+  {
+    "name": "Mertl-Bedachungen GmbH",
+    "url": "http://www.mertl-bedachungen.de/",
+    "branche": "Dachdecker/Spengler",
+    "kontakt_email": "info@mertl-bedachungen.de",
+    "haesslichkeits_score": 4,
+    "bemerkung": "Leitet auf HTTPS um, WordPress-Seite mit Terminbuchung."
+  },
+  {
+    "name": "Dachdeckerei Otto",
+    "url": "http://www.dachdeckerei-otto.de/",
+    "branche": "Dachdecker/Spengler",
+    "kontakt_email": "info@dachdeckerei-otto.de",
+    "haesslichkeits_score": 5,
+    "bemerkung": "Leitet auf HTTPS um, einfacheres aber modernes Design."
+  },
+  {
+    "name": "Malerbetrieb Konrad Huber GmbH",
+    "url": "http://www.maler-huber.de/",
+    "branche": "Maler",
+    "kontakt_email": "info@maler-huber.de",
+    "haesslichkeits_score": 6,
+    "bemerkung": "Leitet auf HTTPS um, aber sehr kurze Content-Länge (271 bytes). Sehr minimalistisch."
+  },
+  {
+    "name": "Malermeister Toni",
+    "url": "http://www.malermeistertoni.de/",
+    "branche": "Maler",
+    "kontakt_email": null,
+    "haesslichkeits_score": 5,
+    "bemerkung": "Leitet auf HTTPS um, einfache Seite (438 bytes)."
+  },
+  {
+    "name": "Malermeister Saitta",
+    "url": "http://www.maler-saitta.de/",
+    "branche": "Maler",
+    "kontakt_email": null,
+    "haesslichkeits_score": 4,
+    "bemerkung": "Leitet auf HTTPS um, moderne Seite."
+  },
+  {
+    "name": "Malerei Schartner",
+    "url": "http://www.malerei-schartner.de/",
+    "branche": "Maler",
+    "kontakt_email": null,
+    "haesslichkeits_score": 5,
+    "bemerkung": "HTTP-Verbindung, einfache Struktur."
+  },
+  {
+    "name": "Max Ulbrich GmbH Malerbetrieb",
+    "url": "http://www.maxulbrich.de/",
+    "branche": "Maler",
+    "kontakt_email": null,
+    "haesslichkeits_score": 5,
+    "bemerkung": "HTTP in Google Maps, noch zu prüfen."
+  },
+  {
+    "name": "Raßhofer Malerbetrieb GmbH",
+    "url": "http://www.rasshofer.org/",
+    "branche": "Maler",
+    "kontakt_email": "info@rasshofer.org",
+    "haesslichkeits_score": 5,
+    "bemerkung": "KEINE HTTPS-Weiterleitung! Bleibt auf HTTP. Älterer Look (1243 bytes)."
+  }
+]
