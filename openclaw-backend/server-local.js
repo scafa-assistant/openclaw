@@ -1,8 +1,9 @@
-// Simple local backend without MongoDB - using in-memory storage
+// OpenClaw Backend mit Auto-Test-Accounts
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const { v4: uuidv4 } = require('uuid');
+const { seedTestAccounts, TEST_ACCOUNTS } = require('./test-accounts');
 
 const app = express();
 app.use(cors());
@@ -14,6 +15,9 @@ const messages = new Map();
 
 // JWT Secret
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-secret-32-chars-minimum';
+
+// Seed test accounts at startup
+seedTestAccounts(users, messages);
 
 // Middleware
 const authMiddleware = (req, res, next) => {
@@ -32,9 +36,18 @@ app.get('/health', (req, res) => {
   res.json({ 
     status: 'ok', 
     timestamp: new Date().toISOString(),
-    mode: 'local-test',
+    mode: 'local-test-with-auto-accounts',
     users: users.size,
-    messages: Array.from(messages.values()).reduce((acc, arr) => acc + arr.length, 0)
+    messages: Array.from(messages.values()).reduce((acc, arr) => acc + arr.length, 0),
+    testAccounts: TEST_ACCOUNTS.map(a => a.email)
+  });
+});
+
+// Get test accounts list
+app.get('/api/v1/auth/test-accounts', (req, res) => {
+  res.json({
+    accounts: TEST_ACCOUNTS.map(a => ({ email: a.email, password: a.password })),
+    note: 'Use these for quick testing'
   });
 });
 
@@ -48,7 +61,7 @@ app.post('/api/v1/auth/register', (req, res) => {
   const user = {
     id: uuidv4(),
     email,
-    password, // In real: hash this!
+    password,
     tier: 'FREE',
     createdAt: new Date()
   };
@@ -59,7 +72,7 @@ app.post('/api/v1/auth/register', (req, res) => {
   
   res.json({
     accessToken: token,
-    refreshToken: token, // Simplified
+    refreshToken: token,
     user: { id: user.id, email: user.email, tier: user.tier }
   });
 });
@@ -79,6 +92,29 @@ app.post('/api/v1/auth/login', (req, res) => {
     accessToken: token,
     refreshToken: token,
     user: { id: user.id, email: user.email, tier: user.tier }
+  });
+});
+
+// Guest mode
+app.post('/api/v1/auth/guest', (req, res) => {
+  const guestId = 'guest-' + Math.random().toString(36).substr(2, 9);
+  const user = {
+    id: guestId,
+    email: `${guestId}@openclaw.guest`,
+    password: 'guest',
+    tier: 'FREE',
+    isGuest: true,
+    createdAt: new Date()
+  };
+  users.set(user.email, user);
+  messages.set(user.id, []);
+  
+  const token = jwt.sign({ userId: user.id, email: user.email }, JWT_SECRET, { expiresIn: '24h' });
+  
+  res.json({
+    accessToken: token,
+    refreshToken: token,
+    user: { id: user.id, email: user.email, tier: user.tier, isGuest: true }
   });
 });
 
@@ -164,7 +200,14 @@ app.listen(PORT, '127.0.0.1', () => {
   console.log('║  API: http://127.0.0.1:3000/api/v1/chat/message       ║');
   console.log('╚════════════════════════════════════════════════════════╝');
   console.log('');
-  console.log('📋 TEST COMMANDS:');
-  console.log('  curl http://127.0.0.1:3000/health');
-  console.log('  curl -X POST http://127.0.0.1:3000/api/v1/auth/register -H "Content-Type: application/json" -d \'{"email":"test@test.de","password":"test123"}\'');
+  console.log('🧪 TEST ACCOUNTS:');
+  TEST_ACCOUNTS.forEach(acc => {
+    console.log(`  📧 ${acc.email} / ${acc.password}`);
+  });
+  console.log('');
+  console.log('🚀 QUICK TEST:');
+  console.log('  curl http://127.0.0.1:3000/api/v1/auth/test-accounts');
+  console.log('  curl -X POST http://127.0.0.1:3000/api/v1/auth/login \\\');
+  console.log('    -H "Content-Type: application/json" \\\');
+  console.log('    -d \'{"email":"demo1@openclaw.test","password":"demo123"}\'');
 });
