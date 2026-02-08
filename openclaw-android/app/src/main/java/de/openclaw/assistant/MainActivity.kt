@@ -1,14 +1,23 @@
 package de.openclaw.assistant
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.*
 import androidx.core.content.ContextCompat
+import androidx.datastore.preferences.preferencesDataStore
 import de.openclaw.assistant.ui.screens.ChatScreen
+import de.openclaw.assistant.ui.screens.OnboardingScreen
 import de.openclaw.assistant.ui.theme.OpenClawTheme
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+import androidx.datastore.preferences.core.booleanPreferencesKey
+
+val Context.dataStore by preferencesDataStore(name = "settings")
 
 class MainActivity : ComponentActivity() {
 
@@ -34,18 +43,32 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun loadApp() {
-        val fromAssistant = intent.getBooleanExtra(
-            "FROM_ASSISTANT", false
-        )
-        val autoListen = intent.getBooleanExtra(
-            "AUTO_LISTEN", false
-        )
+        val fromAssistant = intent.getBooleanExtra("FROM_ASSISTANT", false)
+        val autoListen = intent.getBooleanExtra("AUTO_LISTEN", false)
+        val quickCommand = intent.getStringExtra("quick_command")
+        val startVoice = intent.getBooleanExtra("start_voice", false)
+
+        // Check if onboarding completed
+        val onboardingCompleted = runBlocking {
+            dataStore.data.first()[booleanPreferencesKey("onboarding_completed")] ?: false
+        }
 
         setContent {
             OpenClawTheme {
-                ChatScreen(
-                    autoListen = autoListen
-                )
+                var showOnboarding by remember { mutableStateOf(!onboardingCompleted) }
+
+                if (showOnboarding) {
+                    OnboardingScreen(
+                        onComplete = {
+                            showOnboarding = false
+                        }
+                    )
+                } else {
+                    ChatScreen(
+                        autoListen = autoListen || startVoice,
+                        initialCommand = quickCommand
+                    )
+                }
             }
         }
     }

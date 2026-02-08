@@ -19,6 +19,7 @@ import de.openclaw.assistant.voice.SpeechToTextManager
 @Composable
 fun ChatScreen(
     autoListen: Boolean = false,
+    initialCommand: String? = null,
     vm: ChatViewModel = viewModel()
 ) {
     val messages by vm.messages.collectAsState()
@@ -33,6 +34,13 @@ fun ChatScreen(
     // Auto-Listen wenn vom Assistant gestartet
     LaunchedEffect(autoListen) {
         if (autoListen) vm.startListening()
+    }
+
+    // Handle initial command from widget
+    LaunchedEffect(initialCommand) {
+        initialCommand?.let {
+            vm.sendMessage(it)
+        }
     }
 
     Scaffold(

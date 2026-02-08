@@ -2,12 +2,20 @@ import SwiftUI
 
 @main
 struct OpenClawApp: App {
+    @AppStorage("has_completed_onboarding") private var hasCompletedOnboarding = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .onOpenURL { url in
-                    handleDeepLink(url)
+            Group {
+                if hasCompletedOnboarding {
+                    MainContentView()
+                } else {
+                    OnboardingView(isCompleted: $hasCompletedOnboarding)
                 }
+            }
+            .onOpenURL { url in
+                handleDeepLink(url)
+            }
         }
     }
 
@@ -23,47 +31,57 @@ extension Notification.Name {
     static let startVoiceInput = Notification.Name("startVoiceInput")
 }
 
-struct ContentView: View {
+struct MainContentView: View {
     @StateObject private var authService = AuthService()
+    @StateObject private var chatViewModel = ChatViewModel()
 
     var body: some View {
         Group {
             if authService.isAuthenticated {
                 ChatView()
+                    .environmentObject(chatViewModel)
             } else {
-                OnboardingView()
+                LoginView()
             }
         }
         .environmentObject(authService)
     }
 }
 
-struct OnboardingView: View {
+struct LoginView: View {
     @EnvironmentObject var authService: AuthService
 
     var body: some View {
         VStack(spacing: 20) {
             Image(systemName: "bubble.left.fill")
                 .font(.system(size: 80))
-                .foregroundColor(.orange)
+                .foregroundColor(.accentColor)
 
             Text("OpenClaw")
                 .font(.largeTitle)
                 .bold()
 
-            Text("Dein KI-Assistent für iPhone")
+            Text("Melde dich an, um deinen AI-Assistenten zu nutzen")
                 .font(.subheadline)
                 .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal)
 
             Spacer()
 
+            // Guest Mode Button
+            Button("Als Gast fortfahren") {
+                authService.signInAsGuest()
+            }
+            .buttonStyle(.bordered)
+            .tint(.accentColor)
+
             // Sign in with Apple Button would go here
-            Button("Los geht's") {
-                // For demo, skip auth
-                authService.isAuthenticated = true
+            Button("Mit Apple anmelden") {
+                authService.signInWithApple()
             }
             .buttonStyle(.borderedProminent)
-            .tint(.orange)
+            .tint(.accentColor)
             .padding()
         }
         .padding()
