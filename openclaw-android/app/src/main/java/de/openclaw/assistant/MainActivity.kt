@@ -1,7 +1,6 @@
 package de.openclaw.assistant
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,9 +9,12 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.runtime.*
 import androidx.core.content.ContextCompat
 import androidx.datastore.preferences.preferencesDataStore
+import de.openclaw.assistant.ui.screens.AuthScreen
 import de.openclaw.assistant.ui.screens.ChatScreen
 import de.openclaw.assistant.ui.screens.OnboardingScreen
 import de.openclaw.assistant.ui.theme.OpenClawTheme
+import de.openclaw.assistant.viewmodel.AuthViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -56,18 +58,32 @@ class MainActivity : ComponentActivity() {
         setContent {
             OpenClawTheme {
                 var showOnboarding by remember { mutableStateOf(!onboardingCompleted) }
+                var showAuth by remember { mutableStateOf(false) }
+                var isAuthenticated by remember { mutableStateOf(false) }
 
-                if (showOnboarding) {
-                    OnboardingScreen(
-                        onComplete = {
-                            showOnboarding = false
-                        }
-                    )
-                } else {
-                    ChatScreen(
-                        autoListen = autoListen || startVoice,
-                        initialCommand = quickCommand
-                    )
+                when {
+                    showOnboarding -> {
+                        OnboardingScreen(
+                            onComplete = {
+                                showOnboarding = false
+                                showAuth = true
+                            }
+                        )
+                    }
+                    !isAuthenticated && showAuth -> {
+                        AuthScreen(
+                            onAuthSuccess = {
+                                isAuthenticated = true
+                                showAuth = false
+                            }
+                        )
+                    }
+                    isAuthenticated || !showAuth -> {
+                        ChatScreen(
+                            autoListen = autoListen || startVoice,
+                            initialCommand = quickCommand
+                        )
+                    }
                 }
             }
         }
