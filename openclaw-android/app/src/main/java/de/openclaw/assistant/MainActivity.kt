@@ -11,8 +11,8 @@ import androidx.compose.runtime.*
 import androidx.core.content.ContextCompat
 import androidx.datastore.preferences.preferencesDataStore
 import de.openclaw.assistant.ui.screens.AuthScreen
-import de.openclaw.assistant.ui.screens.ChatScreen
 import de.openclaw.assistant.ui.screens.OnboardingScreen
+import de.openclaw.assistant.ui.screens.SmartChatScreen
 import de.openclaw.assistant.ui.theme.OpenClawTheme
 import de.openclaw.assistant.viewmodel.AuthViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -67,22 +67,20 @@ class MainActivity : ComponentActivity() {
                         OnboardingScreen(
                             onComplete = {
                                 showOnboarding = false
-                                showAuth = true
+                                isAuthenticated = true // Direkt als Gast einloggen
                             }
                         )
                     }
-                    !isAuthenticated && showAuth -> {
+                    !isAuthenticated -> {
                         AuthScreen(
                             onAuthSuccess = {
                                 isAuthenticated = true
-                                showAuth = false
                             }
                         )
                     }
-                    isAuthenticated || !showAuth -> {
-                        ChatScreen(
-                            autoListen = autoListen || startVoice || fromAssistant,
-                            initialCommand = quickCommand
+                    else -> {
+                        SmartChatScreen(
+                            autoListen = autoListen || startVoice || fromAssistant
                         )
                     }
                 }
