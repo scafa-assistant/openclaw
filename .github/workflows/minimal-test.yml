@@ -1,0 +1,25 @@
+name: Minimal Android Test
+
+on:
+  push:
+    paths:
+      - 'test-minimal-android/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          
+      - name: Grant execute permission for gradlew
+        run: chmod +x test-minimal-android/gradlew
+        
+      - name: Build Debug APK
+        working-directory: ./test-minimal-android
+        run: ./gradlew assembleDebug --stacktrace
