@@ -9,4 +9,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="openclaw_orange">#FFFF6B35</color>
     <color name="openclaw_dark">#FF1A1A2E</color>
+    <color name="primary">#FFFF6B35</color>
+    <color name="surface">#FF1A1A2E</color>
 </resources>
