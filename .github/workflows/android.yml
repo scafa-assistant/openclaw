@@ -96,20 +96,16 @@ jobs:
         path: openclaw-android/app/build/reports/tests/
         retention-days: 7
 
-  # Backend Deployment (optional)
-  deploy-backend:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' && github.event.inputs.build_type == 'release'
-    
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Deploy to Railway
-      uses: railway/cli@latest
-      with:
-        railway_token: ${{ secrets.RAILWAY_TOKEN }}
-      run: |
-        cd openclaw-backend
-        railway up
+  # Backend Deployment (optional - manuell via Railway Dashboard)
+  # deploy-backend:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+  #   - name: Checkout repository
+  #     uses: actions/checkout@v4
+  #   - name: Deploy to Railway
+  #     run: |
+  #       npm install -g @railway/cli
+  #       cd openclaw-backend
+  #       railway up --token ${{ secrets.RAILWAY_TOKEN }}
