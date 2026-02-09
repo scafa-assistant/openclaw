@@ -1,6 +1,7 @@
 package de.openclaw.assistant.service
 
 import android.app.Activity
+import android.app.SearchManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.speech.RecognizerIntent

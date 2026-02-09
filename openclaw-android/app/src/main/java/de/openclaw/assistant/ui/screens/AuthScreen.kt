@@ -12,6 +12,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.openclaw.assistant.viewmodel.AuthViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun AuthScreen(
     onAuthSuccess: () -> Unit,

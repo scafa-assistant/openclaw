@@ -16,6 +16,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import de.openclaw.assistant.viewmodel.ChatViewModel
 import de.openclaw.assistant.voice.SpeechToTextManager
 
+@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun ChatScreen(
     autoListen: Boolean = false,

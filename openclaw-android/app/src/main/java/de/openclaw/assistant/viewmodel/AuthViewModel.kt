@@ -4,8 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import de.openclaw.assistant.data.api.OpenClawApi
 import de.openclaw.assistant.data.local.SettingsDataStore
+import de.openclaw.assistant.data.model.AuthRequest
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class AuthViewModel(
@@ -29,7 +31,7 @@ class AuthViewModel(
         viewModelScope.launch {
             // Check if we have a token
             val token = settingsDataStore.authToken.first()
-            _isAuthenticated.value = !token.isNullOrEmpty()
+            _isAuthenticated.value = token != null && token.isNotEmpty()
         }
     }
 
@@ -49,14 +51,24 @@ class AuthViewModel(
             _error.value = null
             
             try {
-                val response = api.login(email, password)
-                settingsDataStore.saveAuthToken(response.accessToken)
-                settingsDataStore.saveUserData(
-                    email = response.user.email,
-                    tier = response.user.tier
-                )
-                _isAuthenticated.value = true
-                _isGuest.value = false
+                val request = AuthRequest(email, password)
+                val response = api.login(request)
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        settingsDataStore.saveAuthToken(body.accessToken)
+                        settingsDataStore.saveUserData(
+                            email = body.user.email,
+                            tier = body.user.tier
+                        )
+                        _isAuthenticated.value = true
+                        _isGuest.value = false
+                    } else {
+                        _error.value = "Empty response"
+                    }
+                } else {
+                    _error.value = "Login failed: ${response.code()}"
+                }
             } catch (e: Exception) {
                 _error.value = e.message ?: "Login failed"
             } finally {
@@ -71,14 +83,24 @@ class AuthViewModel(
             _error.value = null
             
             try {
-                val response = api.register(email, password)
-                settingsDataStore.saveAuthToken(response.accessToken)
-                settingsDataStore.saveUserData(
-                    email = response.user.email,
-                    tier = response.user.tier
-                )
-                _isAuthenticated.value = true
-                _isGuest.value = false
+                val request = AuthRequest(email, password)
+                val response = api.register(request)
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        settingsDataStore.saveAuthToken(body.accessToken)
+                        settingsDataStore.saveUserData(
+                            email = body.user.email,
+                            tier = body.user.tier
+                        )
+                        _isAuthenticated.value = true
+                        _isGuest.value = false
+                    } else {
+                        _error.value = "Empty response"
+                    }
+                } else {
+                    _error.value = "Registration failed: ${response.code()}"
+                }
             } catch (e: Exception) {
                 _error.value = e.message ?: "Registration failed"
             } finally {
