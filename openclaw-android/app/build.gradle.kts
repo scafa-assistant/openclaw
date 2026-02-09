@@ -47,6 +47,13 @@ android {
     }
 }
 
+// KSP Configuration
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+    arg("room.incremental", "true")
+    arg("room.expandProjection", "true")
+}
+
 dependencies {
     // Core Android
     implementation("androidx.core:core-ktx:1.13.1")
