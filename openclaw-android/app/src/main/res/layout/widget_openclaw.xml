@@ -45,30 +45,33 @@
 
         <Button
             android:id="@+id/widget_weather_button"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Wetter"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:background="@color/primary"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/widget_reminder_button"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Erinnerung"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:background="@color/primary"
+            android:textColor="@android:color/white" />
 
         <Button
             android:id="@+id/widget_timer_button"
-            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Timer"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:background="@color/primary"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>
