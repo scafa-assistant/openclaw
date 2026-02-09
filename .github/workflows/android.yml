@@ -49,7 +49,7 @@ jobs:
       if: github.event.inputs.build_type != 'release'
       run: |
         cd openclaw-android
-        ./gradlew assembleDebug --no-daemon
+        ./gradlew assembleDebug --no-daemon --stacktrace
 
     # Release Build (requires signing)
     - name: Build Release APK
