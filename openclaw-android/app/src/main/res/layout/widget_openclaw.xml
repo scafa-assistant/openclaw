@@ -33,7 +33,7 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:src="@android:drawable/ic_btn_speak_now"
-            android:background="?attr/selectableItemBackgroundBorderless"
+            android:background="?android:attr/selectableItemBackground"
             android:contentDescription="@string/start_voice" />
     </LinearLayout>
 
@@ -45,7 +45,7 @@
 
         <Button
             android:id="@+id/widget_weather_button"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -54,7 +54,7 @@
 
         <Button
             android:id="@+id/widget_reminder_button"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -63,7 +63,7 @@
 
         <Button
             android:id="@+id/widget_timer_button"
-            style="@style/Widget.Material3.Button.TextButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
