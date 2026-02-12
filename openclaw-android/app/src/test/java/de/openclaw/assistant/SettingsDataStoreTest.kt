@@ -72,6 +72,9 @@ class SettingsDataStoreTest {
 
     @Test
     fun `default values are correct`() = runTest {
+        // Clear any previously saved values to test actual defaults
+        settingsDataStore.clearAll()
+        
         val model = settingsDataStore.preferredModel.first()
         val language = settingsDataStore.language.first()
         val tts = settingsDataStore.ttsEnabled.first()
