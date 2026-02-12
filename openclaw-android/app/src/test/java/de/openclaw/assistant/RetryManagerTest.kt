@@ -15,10 +15,10 @@ class RetryManagerTest {
         val retryManager = RetryManager(maxRetries = 3)
         var callCount = 0
         
-        val result = retryManager.executeWithRetry {
+        val result = retryManager.executeWithRetry(operation = {
             callCount++
             "success"
-        }
+        })
         
         Assert.assertEquals(1, callCount)
         Assert.assertEquals("success", result)
@@ -29,11 +29,11 @@ class RetryManagerTest {
         val retryManager = RetryManager(maxRetries = 3, initialDelayMs = 10)
         var callCount = 0
         
-        val result = retryManager.executeWithRetry {
+        val result = retryManager.executeWithRetry(operation = {
             callCount++
             if (callCount < 3) throw IOException("Network error")
             "success"
-        }
+        })
         
         Assert.assertEquals(3, callCount)
         Assert.assertEquals("success", result)
@@ -45,10 +45,10 @@ class RetryManagerTest {
         var callCount = 0
         
         try {
-            retryManager.executeWithRetry {
+            retryManager.executeWithRetry(operation = {
                 callCount++
                 throw IOException("Network error")
-            }
+            })
             Assert.fail("Should have thrown exception")
         } catch (e: IOException) {
             Assert.assertEquals("Network error", e.message)
