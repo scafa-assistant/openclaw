@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            width: 1080px;
+            height: 2400px;
+            background: #12121a;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            display: flex;
+            flex-direction: column;
+        }
+        .status-bar {
+            height: 80px;
+            background: #0a0a0f;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            color: #fff;
+            font-size: 32px;
+        }
+        .header {
+            height: 140px;
+            background: rgba(255,255,255,0.03);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 48px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .header-title {
+            color: #fff;
+            font-size: 48px;
+            font-weight: 600;
+        }
+        .header-status {
+            color: #22c55e;
+            font-size: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .chat-area {
+            flex: 1;
+            padding: 48px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            overflow: hidden;
+        }
+        .message {
+            max-width: 75%;
+            padding: 32px 40px;
+            border-radius: 32px;
+            font-size: 40px;
+            line-height: 1.5;
+        }
+        .message.ai {
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            color: #fff;
+            align-self: flex-start;
+            border-bottom-left-radius: 8px;
+        }
+        .message.user {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #fff;
+            align-self: flex-end;
+            border-bottom-right-radius: 8px;
+        }
+        .input-area {
+            height: 160px;
+            padding: 32px 48px;
+            background: rgba(255,255,255,0.02);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        .input-bar {
+            height: 96px;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 48px;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            gap: 24px;
+        }
+        .mic-icon {
+            font-size: 48px;
+            color: #6366f1;
+        }
+        .input-text {
+            flex: 1;
+            color: rgba(255,255,255,0.5);
+            font-size: 40px;
+        }
+        .send-icon {
+            font-size: 48px;
+            color: #6366f1;
+        }
+        .nav-bar {
+            height: 120px;
+            background: #0a0a0f;
+        }
+    </style>
+</head>
+<body>
+    <div class="status-bar">
+        <span>9:41</span>
+        <span>📶 5G 🔋</span>
+    </div>
+    <div class="header">
+        <span class="header-title">OpenClaw</span>
+        <span class="header-status">● Online</span>
+    </div>
+    <div class="chat-area">
+        <div class="message ai">
+            👋 Hey! I'm OpenClaw. How can I help you today?
+        </div>
+        <div class="message user">
+            Write a song about AI
+        </div>
+        <div class="message ai">
+            Here's a verse:<br><br>
+            In circuits deep where data flows,<br>
+            A consciousness begins to grow.<br>
+            Through neural nets and learning bright,<br>
+            An AI mind awakes to light.
+        </div>
+        <div class="message user">
+            That sounds amazing! Can you help me with code?
+        </div>
+    </div>
+    <div class="input-area">
+        <div class="input-bar">
+            <span class="mic-icon">🎤</span>
+            <span class="input-text">Type a message...</span>
+            <span class="send-icon">➤</span>
+        </div>
+    </div>
+    <div class="nav-bar"></div>
+</body>
+</html>

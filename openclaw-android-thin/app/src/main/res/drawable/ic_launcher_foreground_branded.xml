@@ -1,0 +1,56 @@
+<!-- App Icon für Android - ungehört. Branding -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <!-- Background - Deep ungehört. Black -->
+    <path
+        android:fillColor="#0D0D0D"
+        android:pathData="M0,0h108v108h-108z"/>
+    
+    <!-- Outer Glow/Gold Ring -->
+    <path
+        android:fillColor="#d4af37"
+        android:pathData="M54,16
+                         a38,38 0 1,0 0,76
+                         a38,38 0 1,0 0,-76z
+                         M54,22
+                         a32,32 0 1,1 0,64
+                         a32,32 0 1,1 0,-64z"
+        android:fillAlpha="0.9"/>
+    
+    <!-- Inner Circle - Dark -->
+    <path
+        android:fillColor="#1A1A2E"
+        android:pathData="M54,24
+                         a30,30 0 1,0 0,60
+                         a30,30 0 1,0 0,-60z"/>
+    
+    <!-- Waveform/Claw Icon - Gold -->
+    <path
+        android:fillColor="#d4af37"
+        android:pathData="M38,42
+                         c0,-4 4,-8 8,-8
+                         c4,0 6,4 8,8
+                         c2,-4 4,-8 8,-8
+                         c4,0 8,4 8,8
+                         c0,12 -16,28 -16,28
+                         s-16,-16 -16,-28z
+                         M44,46
+                         c0,-2 2,-4 4,-4
+                         s4,2 4,4
+                         c0,4 -4,12 -4,12
+                         s-4,-8 -4,-12z
+                         M60,46
+                         c0,-2 2,-4 4,-4
+                         s4,2 4,4
+                         c0,4 -4,12 -4,12
+                         s-4,-8 -4,-12z"/>
+    
+    <!-- Accent Dots -->
+    <path
+        android:fillColor="#00D4AA"
+        android:pathData="M54,36a3,3 0 1,0 0,6a3,3 0 1,0 0,-6z"/>
+</vector>

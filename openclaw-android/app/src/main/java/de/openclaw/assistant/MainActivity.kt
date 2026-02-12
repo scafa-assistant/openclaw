@@ -2,8 +2,11 @@ package de.openclaw.assistant
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
@@ -24,6 +27,13 @@ val Context.dataStore by preferencesDataStore(name = "settings")
 
 class MainActivity : ComponentActivity() {
 
+    companion object {
+        private const val TAG = "MainActivity"
+        const val EXTRA_COMMAND = "command_text"
+        const val EXTRA_FROM_ASSISTANT = "FROM_ASSISTANT"
+        const val EXTRA_AUTO_LISTEN = "AUTO_LISTEN"
+    }
+
     private val requestPermission = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -32,6 +42,9 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Deeplink/Intent-Verarbeitung
+        handleIntent(intent)
 
         // Mikrofon-Permission prüfen
         if (ContextCompat.checkSelfPermission(
@@ -45,11 +58,74 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        handleIntent(intent)
+    }
+
+    /**
+     * Verarbeitet Intents und Deeplinks von Google Assistant
+     */
+    private fun handleIntent(intent: Intent) {
+        val action = intent.action
+        val data = intent.data
+
+        Log.d(TAG, "Handling intent: action=$action, data=$data")
+
+        when (action) {
+            Intent.ACTION_VIEW -> handleDeepLink(data)
+            Intent.ACTION_ASSIST -> handleAssistIntent(intent)
+        }
+    }
+
+    /**
+     * Verarbeitet Deeplinks im Format openclaw://command?text={command}
+     */
+    private fun handleDeepLink(data: Uri?) {
+        if (data == null) return
+
+        if (data.scheme == "openclaw") {
+            when (data.host) {
+                "command" -> {
+                    val command = data.getQueryParameter("text")
+                    command?.let {
+                        Log.d(TAG, "Command from deeplink: $it")
+                        intent.putExtra(EXTRA_COMMAND, it)
+                        intent.putExtra(EXTRA_FROM_ASSISTANT, true)
+                        intent.putExtra(EXTRA_AUTO_LISTEN, true)
+                    }
+                }
+                "main" -> {
+                    Log.d(TAG, "Opening main screen")
+                }
+            }
+        }
+    }
+
+    /**
+     * Verarbeitet direkte Assistant-Anfragen
+     */
+    private fun handleAssistIntent(intent: Intent) {
+        val query = intent.getStringExtra("android.intent.extra.ASSIST_QUERY")
+        Log.d(TAG, "Assist query: $query")
+        // Query wird bereits von AppActionsActivity verarbeitet
+    }
+
     private fun loadApp() {
-        val fromAssistant = intent.getBooleanExtra("FROM_ASSISTANT", false)
-        val autoListen = intent.getBooleanExtra("AUTO_LISTEN", false)
+        // Intent-Extras extrahieren
+        val fromAssistant = intent.getBooleanExtra(EXTRA_FROM_ASSISTANT, false)
+        val autoListen = intent.getBooleanExtra(EXTRA_AUTO_LISTEN, false)
+        val command = intent.getStringExtra(EXTRA_COMMAND)
         val quickCommand = intent.getStringExtra("quick_command")
         val startVoice = intent.getBooleanExtra("start_voice", false)
+
+        Log.d(TAG, "Loading app: fromAssistant=$fromAssistant, autoListen=$autoListen, command=$command")
+
+        // Command verarbeiten falls vorhanden
+        command?.let {
+            // TODO: Command an ViewModel weitergeben
+            // chatViewModel.processCommand(it)
+        }
 
         // Check if onboarding completed
         val onboardingCompleted = runBlocking {
@@ -79,6 +155,11 @@ class MainActivity : ComponentActivity() {
                         )
                     }
                     else -> {
+                        // Initial Command an ViewModel übergeben
+                        val initialCmd = command ?: quickCommand
+                        if (initialCmd != null) {
+                            // TODO: Command an ViewModel senden
+                        }
                         SmartChatScreen(
                             autoListen = autoListen || startVoice || fromAssistant
                         )

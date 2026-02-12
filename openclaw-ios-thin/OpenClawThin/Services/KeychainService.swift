@@ -1,0 +1,87 @@
+//
+//  KeychainService.swift
+//  OpenClawThin
+//
+//  Sichere Speicherung von Credentials
+//
+
+import Foundation
+import Security
+
+class KeychainService {
+    
+    private let serverURLKey = "com.openclaw.serverurl"
+    private let apiKeyKey = "com.openclaw.apikey"
+    
+    // MARK: - Server URL
+    func saveServerURL(_ url: String) -> Bool {
+        return save(key: serverURLKey, value: url)
+    }
+    
+    func getServerURL() -> String? {
+        return load(key: serverURLKey)
+    }
+    
+    // MARK: - API Key
+    func saveAPIKey(_ key: String) -> Bool {
+        return save(key: apiKeyKey, value: key)
+    }
+    
+    func getAPIKey() -> String? {
+        return load(key: apiKeyKey)
+    }
+    
+    // MARK: - Clear All
+    func clearCredentials() {
+        _ = delete(key: serverURLKey)
+        _ = delete(key: apiKeyKey)
+    }
+    
+    // MARK: - Private Helpers
+    private func save(key: String, value: String) -> Bool {
+        guard let data = value.data(using: .utf8) else { return false }
+        
+        // Delete existing item first
+        delete(key: key)
+        
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecValueData as String: data,
+            kSecAttrAccessible as String: kSecAttrAccessibleWhenUnlockedThisDeviceOnly
+        ]
+        
+        let status = SecItemAdd(query as CFDictionary, nil)
+        return status == errSecSuccess
+    }
+    
+    private func load(key: String) -> String? {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key,
+            kSecReturnData as String: true,
+            kSecMatchLimit as String: kSecMatchLimitOne
+        ]
+        
+        var result: AnyObject?
+        let status = SecItemCopyMatching(query as CFDictionary, &result)
+        
+        guard status == errSecSuccess,
+              let data = result as? Data,
+              let value = String(data: data, encoding: .utf8) else {
+            return nil
+        }
+        
+        return value
+    }
+    
+    private func delete(key: String) -> Bool {
+        let query: [String: Any] = [
+            kSecClass as String: kSecClassGenericPassword,
+            kSecAttrAccount as String: key
+        ]
+        
+        let status = SecItemDelete(query as CFDictionary)
+        return status == errSecSuccess || status == errSecItemNotFound
+    }
+}

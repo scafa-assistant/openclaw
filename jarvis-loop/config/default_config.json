@@ -1,0 +1,45 @@
+{
+  "_comment": "JARVIS Loop Configuration - Ralph Loop für OpenClaw",
+  "version": "1.0.0",
+  "project": {
+    "name": "",
+    "description": "",
+    "created_at": ""
+  },
+  "safeguards": {
+    "max_iterations": 35,
+    "max_cost_per_iteration_usd": 0.50,
+    "max_total_cost_usd": 10.00,
+    "max_time_per_task_min": 30,
+    "auto_save_interval_sec": 30,
+    "auto_pause_on": [
+      "api_error",
+      "cost_limit_reached",
+      "infinite_loop_detected",
+      "task_failed"
+    ]
+  },
+  "agents": {
+    "available": [
+      "coding-agent",
+      "research-agent", 
+      "security-agent",
+      "content-agent",
+      "testing-agent"
+    ],
+    "parallel_max": 3,
+    "default": "coding-agent"
+  },
+  "ui": {
+    "theme": "dark",
+    "refresh_rate_ms": 1000,
+    "show_traces": true,
+    "auto_scroll": true
+  },
+  "logging": {
+    "level": "info",
+    "save_history": true,
+    "log_file": "jarvis-loop.log",
+    "session_file": "session.jsonl"
+  }
+}

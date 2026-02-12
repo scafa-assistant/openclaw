@@ -20,9 +20,8 @@ class RetryManagerTest {
             "success"
         }
         
-        Assert.assertTrue(result.isSuccess)
         Assert.assertEquals(1, callCount)
-        Assert.assertEquals("success", result.getOrNull())
+        Assert.assertEquals("success", result)
     }
 
     @Test
@@ -36,8 +35,8 @@ class RetryManagerTest {
             "success"
         }
         
-        Assert.assertTrue(result.isSuccess)
         Assert.assertEquals(3, callCount)
+        Assert.assertEquals("success", result)
     }
 
     @Test
@@ -45,13 +44,16 @@ class RetryManagerTest {
         val retryManager = RetryManager(maxRetries = 3, initialDelayMs = 10)
         var callCount = 0
         
-        val result = retryManager.executeWithRetry {
-            callCount++
-            throw IOException("Network error")
+        try {
+            retryManager.executeWithRetry {
+                callCount++
+                throw IOException("Network error")
+            }
+            Assert.fail("Should have thrown exception")
+        } catch (e: IOException) {
+            Assert.assertEquals("Network error", e.message)
+            Assert.assertEquals(3, callCount)
         }
-        
-        Assert.assertTrue(result.isFailure)
-        Assert.assertEquals(3, callCount)
     }
 
     @Test
@@ -59,14 +61,18 @@ class RetryManagerTest {
         val retryManager = RetryManager(maxRetries = 3, initialDelayMs = 10)
         var callbackCount = 0
         
-        retryManager.executeWithRetry(
-            operation = {
-                throw IOException("Error")
-            },
-            onRetry = { attempt, _ ->
-                callbackCount++
-            }
-        )
+        try {
+            retryManager.executeWithRetry(
+                operation = {
+                    throw IOException("Error")
+                },
+                onRetry = { attempt, _ ->
+                    callbackCount++
+                }
+            )
+        } catch (_: IOException) {
+            // Expected
+        }
         
         Assert.assertEquals(2, callbackCount) // Called for attempts 1 and 2
     }

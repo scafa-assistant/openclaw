@@ -343,6 +343,15 @@ app.delete('/api/v1/chat/history', authMiddleware, (req, res) => {
   res.json({ success: true, message: 'Verlauf gelöscht' });
 });
 
+// ═══════════════════════════════════════════════════════════
+// MOBILE API ROUTES (für OpenClaw Mobile App)
+// ═══════════════════════════════════════════════════════════
+
+const mobileRoutes = require('./src/mobile/routes/mobile');
+app.use('/api/mobile', mobileRoutes);
+
+console.log('[Server] Mobile API routes loaded at /api/mobile');
+
 // Error Handler
 app.use((err, req, res, next) => {
   console.error('[Error]', err);
